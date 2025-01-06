@@ -18,7 +18,12 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "noUncheckedSideEffectImports": true
+        "noUncheckedSideEffectImports": true,
+        "paths": {
+            "@/*": ["./resources/js/*"],
+            "@css/*": ["./resources/css/*"],
+            "@assets/*": ["./resources/assets/*"]
+        }
     },
     "include": ["../manager/resources"]
 }
