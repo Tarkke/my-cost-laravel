@@ -22,8 +22,13 @@
         "paths": {
             "@/*": ["./resources/js/*"],
             "@css/*": ["./resources/css/*"],
-            "@assets/*": ["./resources/assets/*"]
+            "@assets/*": ["./resources/assets/*"],
+            "ziggy-js": ["./vendor/tightenco/ziggy"]
         }
     },
-    "include": ["../manager/resources"]
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.tsx",
+        "resources/js/**/*.d.ts"
+    ]
 }
