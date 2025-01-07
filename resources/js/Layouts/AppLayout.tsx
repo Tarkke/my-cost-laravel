@@ -20,11 +20,18 @@ export default function AppLayout({
                 <NavMenu />
             </Sider>
             <Layout>
-                <Content style={{ padding: '24px' }}>
+                <Content
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: 24,
+                        paddingBottom: 0,
+                    }}
+                >
                     <div
                         style={{
-                            marginBottom: '24px',
-                            fontSize: '24px',
+                            marginBottom: 24,
+                            fontSize: 24,
                             fontWeight: 'bold',
                         }}
                     >
@@ -32,8 +39,9 @@ export default function AppLayout({
                     </div>
                     <div
                         style={{
+                            flex: 1,
                             padding: 24,
-                            minHeight: 380,
+                            overflowY: 'auto',
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                         }}
