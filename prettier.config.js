@@ -4,7 +4,7 @@ export default {
     useTabs: false,
     semi: false,
     singleQuote: true,
-    quoteProps: 'preserve',
+    quoteProps: 'as-needed',
     trailingComma: 'all',
     bracketSpacing: true,
     bracketSameLine: false,

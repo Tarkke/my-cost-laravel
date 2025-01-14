@@ -1,6 +1,5 @@
 export default {
-    '*.{js,ts,jsx,tsx}': ['oxlint --fix', 'eslint --fix', 'prettier --write'],
-    '*.{css,json}': 'prettier --write',
-    '*.config.{js,ts}': 'prettier --write',
-    '*.php': 'composer pint',
+    '*.!{css,php}': ['eslint --fix', 'prettier --ignore-unknown --write'],
+    '*.{css}': ['stylelint --fix', 'prettier --write'],
+    '*.php': './vendor/bin/pint',
 }
