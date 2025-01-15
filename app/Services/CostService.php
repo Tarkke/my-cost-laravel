@@ -9,19 +9,37 @@ class CostService
 {
     public function getCosts(): Collection
     {
-        //        return Cost::all();
-        // fake data
-        $data = [];
-        for ($i = 1; $i < 60; $i++) {
-            $data[] = [
-                'id' => $i,
-                'type' => 0,
-                'amount' => 100,
-                'time' => now(),
-                'remark' => 'fake data',
-            ];
+        return Cost::all();
+    }
+
+    public function createCost($data): bool
+    {
+        $cost = new Cost($data);
+
+        return $cost->save();
+    }
+
+    public function updateCost($id, $data): bool
+    {
+        /** @var Cost|null $cost */
+        $cost = Cost::find($id);
+
+        if ($cost) {
+            return $cost->update($data);
         }
 
-        return new Collection($data);
+        return false;
+    }
+
+    public function removeCost($id): bool
+    {
+        /** @var Cost|null $cost */
+        $cost = Cost::find($id);
+
+        if ($cost) {
+            return $cost->delete();
+        }
+
+        return false;
     }
 }

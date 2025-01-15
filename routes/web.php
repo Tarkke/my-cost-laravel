@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CostController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -20,6 +21,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/ledgers', [LedgerController::class, 'index'])->name('ledgers');
+
+Route::post('/costs', [CostController::class, 'create']);
+Route::patch('/costs/{id}', [CostController::class, 'update']);
+Route::delete('/costs/{id}', [CostController::class, 'remove']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
