@@ -1,22 +1,15 @@
-import currency from 'currency.js'
-import { CostType } from '@/enums.ts'
+import Currency from 'currency.js'
 
-export function formatAmount(value: string | number, type: CostType) {
-    let pattern = '!#'
-    switch (type) {
-        case CostType.Cost:
-            pattern = `-${pattern}`
-            break
-        case CostType.Income:
-            pattern = `+${pattern}`
-            break
-        default:
-            pattern = `${pattern}`
-            break
-    }
-    return currency(value, {
-        fromCents: true,
-        symbol: '￥',
-        pattern,
-    }).format()
+type Amount = string | number | Currency
+
+export function formatAmount(amount: Amount) {
+    return Currency(amount, { fromCents: true, symbol: '￥' }).format()
+}
+
+export function parseAmount(amount: Amount) {
+    return Currency(amount).intValue
+}
+
+export function getAmount(amount: Amount) {
+    return Currency(amount, { fromCents: true }).value
 }
