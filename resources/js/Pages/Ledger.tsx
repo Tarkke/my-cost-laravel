@@ -1,5 +1,5 @@
 import type { PageProps } from '@/types'
-import type { Cost, CostDto } from '@/types/cost'
+import type { Cost, CostCategoryWithChildren, CostDto } from '@/types/cost'
 import { createCost, removeCost, updateCost } from '@/Apis/costs.ts'
 import CostCard from '@/Components/CostCard.tsx'
 import { CostType } from '@/enums.ts'
@@ -14,30 +14,45 @@ import {
     ProFormRadio,
     ProFormText,
     ProFormTextArea,
+    ProFormTreeSelect,
 } from '@ant-design/pro-components'
 import { Button, Col, Form, message, Row } from 'antd'
 import { useState } from 'react'
 
 type Props = PageProps<{
     costs: Cost[]
+    categories: CostCategoryWithChildren[]
 }>
 
-export default function Ledger({ costs }: Props) {
+export default function Ledger({ costs, categories }: Props) {
     const [open, setOpen] = useState(false)
     const [form] = Form.useForm<CostDto>()
     const [messageApi, contextHolder] = message.useMessage()
     const [deleteLoading, setDeleteLoading] = useState(false)
+    const [treeExpandedKeys, setTreeExpandedKeys] = useState<number[]>([])
+    const [treeCategoriesDate, setTreeCategoriesDate] =
+        useState<CostCategoryWithChildren[]>(categories)
+
+    const filterCategories = (type: CostType) => {
+        setTreeCategoriesDate(
+            categories.filter((category) => category.type === type),
+        )
+    }
 
     const openForm = (cost?: Cost) => {
         if (cost) {
+            setTreeExpandedKeys([cost.category.parent?.id ?? cost.category.id])
+            filterCategories(cost.type)
             form.setFieldsValue({
                 id: cost.id,
                 type: cost.type,
+                category_id: cost.category.id,
                 amount: getAmount(cost.amount),
                 time: formatTime(cost.time),
                 remark: cost.remark,
             })
         } else {
+            filterCategories(CostType.Cost)
             form.setFieldsValue({
                 type: CostType.Cost,
                 time: getNow(),
@@ -48,6 +63,7 @@ export default function Ledger({ costs }: Props) {
 
     const closeForm = () => {
         setOpen(false)
+        setTreeExpandedKeys([])
         setDeleteLoading(false)
         form.resetFields()
     }
@@ -109,6 +125,14 @@ export default function Ledger({ costs }: Props) {
             <DrawerForm<CostDto>
                 title={form.getFieldValue('id') ? '编辑账单' : '记一笔'}
                 open={open}
+                onValuesChange={(changedValues) => {
+                    if (changedValues.type !== void 0) {
+                        filterCategories(changedValues.type)
+                        form.setFieldsValue({
+                            category_id: undefined,
+                        })
+                    }
+                }}
                 onOpenChange={(open) => {
                     !open && closeForm()
                 }}
@@ -153,6 +177,25 @@ export default function Ledger({ costs }: Props) {
                         {
                             required: true,
                             message: '请选择类型',
+                        },
+                    ]}
+                />
+                <ProFormTreeSelect
+                    label="分类"
+                    name="category_id"
+                    fieldProps={{
+                        treeDefaultExpandedKeys: treeExpandedKeys,
+                        treeData: treeCategoriesDate,
+                        fieldNames: {
+                            label: 'name',
+                            value: 'id',
+                            children: 'children',
+                        },
+                    }}
+                    rules={[
+                        {
+                            required: true,
+                            message: '请选择分类',
                         },
                     ]}
                 />

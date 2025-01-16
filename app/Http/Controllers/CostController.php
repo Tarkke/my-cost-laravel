@@ -17,13 +17,14 @@ class CostController
     public function create(Request $request): void
     {
         $request->validate([
-            'type' => 'required|in:0,1,2',
+            'type' => 'required|in:1,2,3',
+            'category_id' => 'required|exists:cost_categories,id',
             'amount' => 'required|numeric',
             'time' => 'required|date_format:Y-m-d H:i',
             'remark' => 'nullable|string',
         ]);
 
-        $this->costService->createCost($request->only('type', 'amount', 'time', 'remark'));
+        $this->costService->createCost($request->only('type', 'category_id', 'amount', 'time', 'remark'));
 
         to_route('ledgers');
     }
@@ -31,13 +32,14 @@ class CostController
     public function update(Request $request, string $id): void
     {
         $request->validate([
-            'type' => 'nullable|in:0,1,2',
+            'type' => 'nullable|in:1,2,3',
+            'category_id' => 'required|exists:cost_categories,id',
             'amount' => 'nullable|numeric',
             'time' => 'nullable|date_format:Y-m-d H:i',
             'remark' => 'nullable|string',
         ]);
 
-        $this->costService->updateCost($id, $request->only('type', 'amount', 'time', 'remark'));
+        $this->costService->updateCost($id, $request->only('type', 'category_id', 'amount', 'time', 'remark'));
 
         to_route('ledgers');
     }

@@ -15,7 +15,9 @@ export default function CostCard({ cost, onClick }: Props) {
             <Flex justify="space-between">
                 <div>
                     <div className="text-base font-medium">
-                        {cost.type === 0 ? '支出' : '收入'}
+                        {[cost.category.parent?.name, cost.category.name]
+                            .filter((n) => n)
+                            .join(' - ')}
                     </div>
                     <div className="text-gray-500">
                         <span>{formatTime(cost.time, 'time')}</span>

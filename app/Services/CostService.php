@@ -9,7 +9,7 @@ class CostService
 {
     public function getCosts(): Collection
     {
-        return Cost::all();
+        return Cost::with('category.parent')->get();
     }
 
     public function createCost($data): bool

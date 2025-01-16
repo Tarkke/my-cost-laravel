@@ -1,5 +1,5 @@
 export enum CostType {
-    Cost,
-    Income,
-    Transfer,
+    Cost = 1,
+    Income = 2,
+    Transfer = 3,
 }
